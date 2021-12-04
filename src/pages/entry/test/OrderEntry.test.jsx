@@ -6,6 +6,7 @@ import OrderEntry from '../OrderEntry'
 
 describe('OrderEntry component tests', () => {
   test('Handles error for scoops and toppings routes', async () => {
+    // Reset handlers to override server response to test error response
     server.resetHandlers(
       rest.get(`${BASE_PATH}/scoops`, (_, res, ctx) => res(ctx.status(500))),
       rest.get(`${BASE_PATH}/toppings`, (_, res, ctx) => res(ctx.status(500)))
