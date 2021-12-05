@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { rest } from 'msw'
+import { OrderDetailsProvider } from '../../../context/OrderDetails'
 import { server } from '../../../mocks/server'
 import { BASE_PATH } from '../../../utils/constants'
 import OrderEntry from '../OrderEntry'
@@ -12,7 +13,7 @@ describe('OrderEntry component tests', () => {
       rest.get(`${BASE_PATH}/toppings`, (_, res, ctx) => res(ctx.status(500)))
     )
 
-    render(<OrderEntry />)
+    render(<OrderEntry />, { wrapper: OrderDetailsProvider })
 
     // We need waitFor because we need to wait for two server responses
     await waitFor(async () => {
