@@ -1,10 +1,9 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen } from '../../../test-utils/testing-library'
 import userEvent from '@testing-library/user-event'
-import { OrderDetailsProvider } from '../../../context/OrderDetails'
 import Options from '../Options'
 
 test('update scoop subtotal when scoop changes', async () => {
-  render(<Options optionType="scoops" />, { wrapper: OrderDetailsProvider })
+  render(<Options optionType="scoops" />)
   const scoopsSubtotal = screen.getByText('Scoops total: $', { exact: false })
 
   expect(scoopsSubtotal).toHaveTextContent('0.00')
@@ -25,7 +24,7 @@ test('update scoop subtotal when scoop changes', async () => {
 })
 
 test('update toppings subtotal when topping changes', async () => {
-  render(<Options optionType="toppings" />, { wrapper: OrderDetailsProvider })
+  render(<Options optionType="toppings" />)
   const toppingsSubtotal = screen.getByText('Toppings total: $', {
     exact: false,
   })
