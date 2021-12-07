@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Row from 'react-bootstrap/Row'
 import { useOrderDetails } from '../../context/OrderDetails'
 import { BASE_PATH, pricePerItem } from '../../utils/constants'
+import { formatCurrency } from '../../utils/functions'
 import AlertBanner from '../common/AlertBanner'
 import ScoopOption from './ScoopOption'
 import ToppingOption from './ToppingOption'
@@ -35,7 +36,7 @@ export default function Options({ optionType }) {
   return (
     <>
       <h2>{title}</h2>
-      <p>{pricePerItem[optionType]} each</p>
+      <p>{formatCurrency(pricePerItem[optionType])} each</p>
       <p>
         {title} total: {orderDetails.totals[optionType]}
       </p>

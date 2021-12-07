@@ -1,6 +1,7 @@
-import { render, screen } from '../../../test-utils/testing-library'
+import { render, screen, waitFor } from '../../../test-utils/testing-library'
 import userEvent from '@testing-library/user-event'
 import Options from '../Options'
+import OrderEntry from '../OrderEntry'
 
 test('update scoop subtotal when scoop changes', async () => {
   render(<Options optionType="scoops" />)
@@ -48,11 +49,57 @@ test('update toppings subtotal when topping changes', async () => {
 })
 
 describe('grand total tests', () => {
-  test('grand total starts at $0.00', () => {})
+  test('grand total have start value and updates properly if scoop is added first', async () => {
+    render(<OrderEntry />)
+    const grandTotal = screen.getByText('Grand total: $', { exact: false })
 
-  test('grand total updates properly if scoop is added first', () => {})
+    expect(grandTotal).toHaveTextContent('0.00')
 
-  test('grand total updates properly if toppings is added first', () => {})
+    const chocolateScoop = await screen.findByRole('spinbutton', {
+      name: 'Chocolate',
+    })
+    const mandmsTopping = await screen.findByRole('checkbox', {
+      name: 'M&Ms',
+    })
 
-  test('grand total updates properly if item is removed', () => {})
+    userEvent.type(chocolateScoop, '1')
+    userEvent.click(mandmsTopping)
+    expect(grandTotal).toHaveTextContent('3.50')
+  })
+
+  test('grand total updates properly if toppings is added first', async () => {
+    render(<OrderEntry />)
+    const grandTotal = screen.getByText('Grand total: $', { exact: false })
+
+    const vanillaScoop = await screen.findByRole('spinbutton', {
+      name: 'Vanilla',
+    })
+    const cherriesTopping = await screen.findByRole('checkbox', {
+      name: 'Cherries',
+    })
+
+    userEvent.click(cherriesTopping)
+    userEvent.type(vanillaScoop, '2')
+    expect(grandTotal).toHaveTextContent('5.50')
+  })
+
+  test('grand total updates properly if item is removed', async () => {
+    render(<OrderEntry />)
+    const grandTotal = screen.getByText('Grand total: $', { exact: false })
+
+    const chocolateScoop = await screen.findByRole('spinbutton', {
+      name: 'Chocolate',
+    })
+    const fudgeTopping = await screen.findByRole('checkbox', {
+      name: 'Hot fudge',
+    })
+
+    userEvent.type(chocolateScoop, '2')
+    userEvent.click(fudgeTopping)
+    expect(grandTotal).toHaveTextContent('5.50')
+
+    userEvent.type(chocolateScoop, '1')
+    userEvent.click(fudgeTopping)
+    expect(grandTotal).toHaveTextContent('2.00')
+  })
 })
