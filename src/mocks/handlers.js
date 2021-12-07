@@ -19,4 +19,7 @@ export const handlers = [
       ])
     )
   }),
+  rest.post(`${BASE_PATH}/order`, (req, res, ctx) => {
+    return res(ctx.json({ orderNumber: '12345678900' }))
+  }),
 ]
