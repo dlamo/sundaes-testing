@@ -47,3 +47,13 @@ test('update toppings subtotal when topping changes', async () => {
   expect(fudgeCheck).not.toBeChecked()
   expect(toppingsSubtotal).toHaveTextContent('1.50')
 })
+
+describe('grand total tests', () => {
+  test('grand total starts at $0.00', () => {})
+
+  test('grand total updates properly if scoop is added first', () => {})
+
+  test('grand total updates properly if toppings is added first', () => {})
+
+  test('grand total updates properly if item is removed', () => {})
+})
