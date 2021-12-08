@@ -64,3 +64,22 @@ test('order phases for happy path', async () => {
   await screen.findByRole('spinbutton', { name: 'Chocolate' })
   await screen.findByRole('checkbox', { name: 'Cherries' })
 })
+
+test('toppings header are not present in case of no toppings selected', async () => {
+  render(<App />)
+
+  // OrderEntry phase
+  const chocolateScoop = await screen.findByRole('spinbutton', {
+    name: 'Chocolate',
+  })
+  userEvent.type(chocolateScoop, '1')
+
+  const orderButton = screen.getByRole('button', { name: 'Order Sundae' })
+  userEvent.click(orderButton)
+
+  // OrderSummary phase
+  const toppingsSummary = screen.queryByRole('heading', {
+    name: /toppings: \$/i,
+  })
+  expect(toppingsSummary).not.toBeInTheDocument()
+})
