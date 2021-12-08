@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '../../../test-utils/testing-library'
+import userEvent from '@testing-library/user-event'
 import { rest } from 'msw'
 import { server } from '../../../mocks/server'
 import { BASE_PATH } from '../../../utils/constants'
@@ -19,5 +20,25 @@ describe('OrderEntry component tests', () => {
       const alerts = await screen.findAllByRole('alert')
       expect(alerts).toHaveLength(2)
     })
+  })
+
+  test('button is disabled if no scoop is selected', async () => {
+    render(<OrderEntry />)
+
+    const orderButton = await screen.findByRole('button', {
+      name: 'Order Sundae',
+    })
+    expect(orderButton).toBeDisabled()
+
+    const chocolateScoop = await screen.findByRole('spinbutton', {
+      name: 'Chocolate',
+    })
+    userEvent.clear(chocolateScoop)
+    userEvent.type(chocolateScoop, '1')
+    expect(orderButton).toBeEnabled()
+
+    userEvent.clear(chocolateScoop)
+    userEvent.type(chocolateScoop, '0')
+    expect(orderButton).toBeDisabled()
   })
 })
