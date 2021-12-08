@@ -39,11 +39,16 @@ test('order phases for happy path', async () => {
   userEvent.click(summaryButton)
 
   // OrderConfirmation phase
+  const loading = screen.getByText(/loading/i, { exact: false })
+  expect(loading).toBeInTheDocument()
+
   const confirmationNumber = await screen.findByRole('heading', {
     name: /your order number is/i,
   })
-
   expect(confirmationNumber).toHaveTextContent('12345678900')
+
+  const notLoading = screen.queryByText('loading') // Using query because it shouldn't be in the document
+  expect(notLoading).not.toBeInTheDocument()
 
   const newOrderButton = screen.getByRole('button', {
     name: 'Create new order',
