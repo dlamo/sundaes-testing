@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '../../../test-utils/testing-library'
+import { render, screen } from '../../../test-utils/testing-library'
 import userEvent from '@testing-library/user-event'
 import Options from '../Options'
 import OrderEntry from '../OrderEntry'
@@ -98,6 +98,7 @@ describe('grand total tests', () => {
     userEvent.click(fudgeTopping)
     expect(grandTotal).toHaveTextContent('5.50')
 
+    userEvent.clear(chocolateScoop)
     userEvent.type(chocolateScoop, '1')
     userEvent.click(fudgeTopping)
     expect(grandTotal).toHaveTextContent('2.00')

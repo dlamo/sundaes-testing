@@ -13,7 +13,7 @@ export default function ScoopOption({ name, imagePath, updateItemCount }) {
       floatValue <= 4 &&
       Math.floor(floatValue) === floatValue
     setIsValid(isValid ? true : false)
-    updateItemCount(name, value)
+    if (isValid) updateItemCount(name, value)
   }
 
   return (
